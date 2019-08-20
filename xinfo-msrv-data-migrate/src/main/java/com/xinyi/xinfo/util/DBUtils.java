@@ -2,6 +2,9 @@ package com.xinyi.xinfo.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xinyi.xinfo.bean.Status;
+import com.xinyi.xinfo.domain.dao.RdbmsDao;
+import com.xinyi.xinfo.domain.dao.impl.MySQLDaoImpl;
+import com.xinyi.xinfo.domain.dao.impl.OracleDaoImpl;
 
 
 import java.sql.Connection;
@@ -14,9 +17,9 @@ public class DBUtils {
      * @param driverClass
      * @return
      */
-    /*public static RDBMSDao RDBMSServiceFactory(String driverClass){
+    public static RdbmsDao RDBMSServiceFactory(String driverClass){
 
-        RDBMSDao rdbmsService = null;
+        RdbmsDao rdbmsService = null;
 
         if(driverClass.contains("mysql")){
             rdbmsService = new MySQLDaoImpl();
@@ -24,7 +27,7 @@ public class DBUtils {
             rdbmsService = new OracleDaoImpl();
         }
         return rdbmsService;
-    }*/
+    }
 
 
     /**

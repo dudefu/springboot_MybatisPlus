@@ -34,10 +34,26 @@ public class DataSourceServiceImpl implements DataSourceService {
         dataSourceMapper.addDataSource(ds);*/
 
         jsonObject = new JSONObject();
+        Boolean b = false;
+
         try {
-            DataSource ds = new DataSource(sourceType, driverClass, userName, password, url, remarks, userId);
-            dataSourceMapper.addDataSource(ds);
-            jsonObject.put("state", new Status(Status.stateEnmu.SUCCESS.code, Status.stateEnmu.SUCCESS.msg));
+
+            try{
+                b = DBUtils.testConnection(driverClass, userName, password, url);
+            }catch (Exception e){
+                e.printStackTrace();
+                jsonObject.put("state", new Status(Status.stateEnmu.FAILURE.code, "数据源验证连接失败，请检查数据源配置信息:"+e.getMessage()));
+            }
+
+            if(b){ //连接成功
+                DataSource ds = new DataSource(sourceType, driverClass, userName, password, url, remarks, userId);
+                dataSourceMapper.addDataSource(ds);
+                jsonObject.put("state", new Status(Status.stateEnmu.SUCCESS.code, Status.stateEnmu.SUCCESS.msg));
+            }else{//连接失败
+                jsonObject.put("state", new Status(Status.stateEnmu.FAILURE.code, "数据源验证连接失败，请检查数据源配置信息"));
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             jsonObject.put("state", new Status(Status.stateEnmu.FAILURE.code, e.getMessage()));
@@ -154,13 +170,27 @@ public class DataSourceServiceImpl implements DataSourceService {
         jsonObject = new JSONObject();
         try{
 
-            DataSource  ds = new DataSource( new BigDecimal(sourceId),sourceType, driverClass, userName, password, url, remarks);
+            Boolean b =false;
+            try{
+                b = DBUtils.testConnection(driverClass, userName, password, url);
+            }catch (Exception e){
+                e.printStackTrace();
+                jsonObject.put("state", new Status(Status.stateEnmu.FAILURE.code, "数据源验证连接失败，请检查数据源配置信息:"+e.getMessage()));
+            }
 
-            int re = dataSourceMapper.updateDataSourceById(ds);
-            jsonObject.put("state",new Status(Status.stateEnmu.SUCCESS.code,Status.stateEnmu.SUCCESS.msg));
-            JSONObject jb = new JSONObject();
-            jb.put("count",re);
-            jsonObject.put("data",jb);
+            if(b){
+                DataSource  ds = new DataSource( new BigDecimal(sourceId),sourceType, driverClass, userName, password, url, remarks);
+
+                int re = dataSourceMapper.updateDataSourceById(ds);
+                jsonObject.put("state",new Status(Status.stateEnmu.SUCCESS.code,Status.stateEnmu.SUCCESS.msg));
+                JSONObject jb = new JSONObject();
+                jb.put("count",re);
+                jsonObject.put("data",jb);
+            }else{
+                jsonObject.put("state", new Status(Status.stateEnmu.FAILURE.code, "数据源验证连接失败，请检查数据源配置信息"));
+            }
+
+
         }catch (Exception e){
             e.printStackTrace();
             jsonObject.put("state",new Status(Status.stateEnmu.FAILURE.code,e.getMessage()));
