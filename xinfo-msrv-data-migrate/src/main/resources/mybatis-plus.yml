@@ -1,0 +1,18 @@
+mybatis-plus:
+  #MyBatis 配置文件位置
+  config-location: classpath:mybatis/mybatis-config.xml                       
+  #MyBatis Mapper 所对应的 XML 文件位置
+  mapper-locations: classpath*:com/xinyi/xinfo/domain/repository/xml/*.xml    
+  #MyBaits 别名包扫描路径
+  type-aliases-package: com.xinyi.xinfo.domain.model                          
+  
+  global-config:
+    #DB 策略配置
+    db-config:             
+      #数据库类型  oracle/mysql
+      db-type: oracle       
+      #默认主键类型(ID_WORKER)    AUTO/NONE/INPUT/ID_WORKER/UUID/ID_WORKER_STR
+      id-type: INPUT        
+      # Sequence序列接口实现类配置
+#      key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
+ 

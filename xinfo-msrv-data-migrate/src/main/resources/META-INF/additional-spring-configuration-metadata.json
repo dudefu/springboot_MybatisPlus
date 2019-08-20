@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "msrv.primary.datasource.type",
+    "type": "java.lang.String",
+    "description": "A description for 'msrv.primary.datasource.type'"
+  },
+  {
+    "name": "msrv.primary.datasource.driverClassName",
+    "type": "java.lang.String",
+    "description": "A description for 'msrv.primary.datasource.driverClassName'"
+  },
+  {
+    "name": "msrv.primary.datasource.url",
+    "type": "java.lang.String",
+    "description": "A description for 'msrv.primary.datasource.url'"
+  },
+  {
+    "name": "msrv.primary.datasource.username",
+    "type": "java.lang.String",
+    "description": "A description for 'msrv.primary.datasource.username'"
+  },
+  {
+    "name": "msrv.primary.datasource.password",
+    "type": "java.lang.String",
+    "description": "A description for 'msrv.primary.datasource.password'"
+  }
+]}

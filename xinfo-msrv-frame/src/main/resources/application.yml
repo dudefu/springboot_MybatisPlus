@@ -1,0 +1,4 @@
+mybatis-plus:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath*:com/xinyi/xinfo/domain/repository/xml/*.xml
+  type-aliases-package: com.xinyi.xinfo.domain.model

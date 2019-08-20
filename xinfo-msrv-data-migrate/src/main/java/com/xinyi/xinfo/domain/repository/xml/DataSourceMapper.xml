@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinyi.xinfo.domain.repository.DataSourceMapper">
+    <resultMap id="BaseResultMap" type="com.xinyi.xinfo.domain.model.DataSource">
+        <result column="source_id" jdbcType="DECIMAL" property="sourceId"/>
+        <result column="source_type" jdbcType="VARCHAR" property="sourceType"/>
+        <result column="driver_class" jdbcType="VARCHAR" property="driverClass"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="enable" jdbcType="DECIMAL" property="enable"/>
+    </resultMap>
+
+    <select id="getDataSourceById" resultMap="BaseResultMap">
+        select * from XY_DATAVIEW.TAB_DATA_MIGRATE_SOURCE where rownum = 1
+    </select>
+
+    <insert id="addDataSource" parameterType="com.xinyi.xinfo.domain.model.DataSource">
+        insert into XY_DATAVIEW.TAB_DATA_MIGRATE_SOURCE values
+        (XY_DATAVIEW.SEQ_TAB_DATA_MIGRATE_SOURCE.nextval,#{sourceType,jdbcType=VARCHAR}, #{driverClass,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},  #{password,jdbcType=VARCHAR},  #{url,jdbcType=VARCHAR},  #{remarks,jdbcType=VARCHAR},1,#{userId,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateDataSourceById" parameterType="com.xinyi.xinfo.domain.model.DataSource">
+        update TAB_DATA_MIGRATE_SOURCE set "source_type" = #{sourceType},"driver_class" = #{driverClass},"user_name" = #{userName},  "password" = #{password},  "url" = #{url},  "remarks" = #{remarks} where "source_id" = #{sourceId}
+    </update>
+
+    <select id="queryDataSourceById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from TAB_DATA_MIGRATE_SOURCE where "source_id" = #{sourceId}
+    </select>
+
+    <select id="queryDataSourceList" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from TAB_DATA_MIGRATE_SOURCE where "user_id" = #{user_id}
+    </select>
+
+    <update id="disableDataSourceById" parameterType="java.lang.String">
+        update TAB_DATA_MIGRATE_SOURCE set "enable" = 2 where "source_id" = #{sourceId}
+    </update>
+
+    <update id="enableDataSourceById" parameterType="java.lang.String">
+        update TAB_DATA_MIGRATE_SOURCE set "enable" = 1 where "source_id" = #{sourceId}
+    </update>
+    
+</mapper>
