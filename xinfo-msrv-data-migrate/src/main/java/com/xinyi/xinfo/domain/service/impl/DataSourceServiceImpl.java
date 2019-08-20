@@ -23,15 +23,6 @@ public class DataSourceServiceImpl implements DataSourceService {
     @Override
     public String addDataSource(String sourceType, String driverClass, String userName, String password, String url, String remarks, String userId) {
 
-        System.out.println("s e r v i c e- - - - - - ");
-        System.out.println("s-sourceTypess==>  " + sourceType);
-        System.out.println("s-driverClass==>  " + driverClass);
-        System.out.println("s-userName==>  " + userName);
-        System.out.println("s-password==>  " + password);
-        System.out.println("s-url==>  " + url);
-        System.out.println("s-remarks==>  " + remarks);
-        /*DataSource  ds = new DataSource( sourceType, driverClass, userName, password, url, remarks, userId);
-        dataSourceMapper.addDataSource(ds);*/
 
         jsonObject = new JSONObject();
         Boolean b = false;
@@ -65,27 +56,6 @@ public class DataSourceServiceImpl implements DataSourceService {
     public String connectionTestDataSource(String driverClass, String userName, String password, String url) {
         JSONObject jsonObject = new JSONObject();
 
-        System.out.println("service - - - - ");
-        System.out.println("driverClass==>  " + driverClass);
-        System.out.println("userName==>  " + userName);
-        System.out.println("password==>  " + password);
-        System.out.println("url==>  " + url);
-
-
-        /**
-         * Mysql
-         * driverClass==>  com.mysql.jdbc.Driver
-         * userName==>  root
-         * password==>  xinyi2513
-         * url==>  jdbc:mysql://10.24.5.21:3306/test
-         */
-        /**
-         * Oracle
-         * driverClass==>  oracle.jdbc.OracleDriver
-         * userName==>  XY_DATAVIEW
-         * password==>  XY_DATAVIEW01
-         * url==>  jdbc:oracle:thin:@183.62.140.8:15221:nsqw
-         */
         try{
             Boolean b = DBUtils.testConnection(driverClass, userName, password, url);
             if (b) { //连接成功

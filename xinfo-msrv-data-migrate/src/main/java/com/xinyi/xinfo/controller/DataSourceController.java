@@ -37,13 +37,6 @@ public class DataSourceController extends BaseController {
             @ApiParam(name = "userId", value = "持有数据源的用户ID", required = true) @RequestParam(required = true) String userId,
             @ApiParam(name = "remarks", value = "备注", required = false) @RequestParam(required = false) String remarks
     ) {
-        System.out.println("a-a-sourceTypess==>  " + sourceType);
-        System.out.println("a-driverClass==>  " + driverClass);
-        System.out.println("a-userName==>  " + userName);
-        System.out.println("a-password==>  " + password);
-        System.out.println("a-url==>  " + url);
-        System.out.println("a-remarks==>  " + remarks);
-
         String result = dataSourceService.addDataSource(sourceType, driverClass, userName, password, url, remarks, userId);
         return result;
     }
@@ -64,12 +57,7 @@ public class DataSourceController extends BaseController {
             @ApiParam(name = "password", value = "连接的数据源密码", required = true) @RequestParam(required = true) String password,
             @ApiParam(name = "url", value = "连接的数据源URL", required = true) @RequestParam(required = true) String url
     ) {
-        System.out.println("driverClass==>  " + driverClass);
-        System.out.println("userName==>  " + userName);
-        System.out.println("password==>  " + password);
-        System.out.println("url==>  " + url);
-
-        //String result = "";
+        
         String result = dataSourceService.connectionTestDataSource(driverClass, userName, password, url);
         return result;
     }
