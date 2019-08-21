@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinyi.xinfo.domain.repository.TaskDescriptionMapper">
+	<select id="queryTaskDescription" resultType="com.xinyi.xinfo.domain.model.TaskDescription">
+		SELECT tdTaskId, tdSourceId,
+		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks
+		FROM TAB_DATA_MIGRATE_TASKDESCTION
+		ORDER BY tdTaskId
+		DESC
+	</select>
+	<select id="queryTaskDescriptionById" resultType="com.xinyi.xinfo.domain.model.TaskDescription">
+		SELECT tdTaskId, tdSourceId,
+		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks
+		FROM TAB_DATA_MIGRATE_TASKDESCTION
+		WHERE
+		tdTaskId=#{tdTaskId}
+	</select>
+	<insert id="insertTaskDescription"  parameterType="com.xinyi.xinfo.domain.model.TaskDescription">
+		INSERT INTO
+		TAB_DATA_MIGRATE_TASKDESCTION(tdTaskId, tdSourceId,
+		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks)
+		VALUES
+		(#{tdTaskId},#{tdSourceId},#{tdMode},#{tdIncrementColumn},
+		#{tdTableName},#{tdColumns},#{tdTargetTableName},#{tdDispatch},#{tdRemarks})
+	</insert>
+	<update id="updateTaskDescription" parameterType="com.xinyi.xinfo.domain.model.TaskDescription">
+		update TAB_DATA_MIGRATE_TASKDESCTION
+		<set>
+			<if test="tdSourceId != null">tdSourceId=#{tdSourceId},</if>
+			<if test="tdMode != null">tdMode=#{tdMode},</if>
+			<if test="tdIncrementColumn != null">tdIncrementColumn=#{tdIncrementColumn},</if>
+			<if test="tdTableName != null">tdTableName=#{tdTableName},</if>
+			<if test="tdColumns != null">tdColumns=#{tdColumns},</if>
+			<if test="tdTargetTableName != null">tdTargetTableName=#{tdTargetTableName},</if>
+			<if test="tdDispatch != null">tdDispatch=#{tdDispatch},</if>
+			<if test="tdRemarks != null">tdRemarks=#{tdRemarks}</if>
+		</set>
+		where tdTaskId=#{tdTaskId}
+	</update>
+	<delete id="deleteTaskDescription">
+		DELETE FROM
+		TAB_DATA_MIGRATE_TASKDESCTION
+		WHERE
+		tdTaskId =
+		#{tdTaskId}
+	</delete>
+	<select id="queryTaskProgressRateById" resultType="com.xinyi.xinfo.domain.model.TaskProgressRate">
+		SELECT
+		concat(max(DISTINCT(cast(SUBSTR(RATEPERCENTAGE, 0, INSTR(RATEPERCENTAGE, '%')-1) as int))),'%') RATEPERCENTAGE,
+		TDTASKID
+		FROM
+		TAB_DATA_MIGRATE_PROGRESSRATE
+		WHERE
+		TDTASKID = #{tdTaskId}
+		GROUP BY
+		TDTASKID
+	</select>
+</mapper>
+    
