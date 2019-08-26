@@ -17,18 +17,11 @@ import java.util.Map;
 
 public class CreateJobJson {
 
-    @Autowired
-    static
-    DataSourceMapper dataSourceMapper ;
-    @Autowired
-    static
-    TaskDescriptionMapper taskDescriptionMapper;
-
     public static void main(String[] args) {
-        DataSource dataSource = dataSourceMapper.queryDataSourceById("41");
-        TaskDescription taskDescription = taskDescriptionMapper.queryTaskDescriptionById(1);
-        String createJobJson = createJobJson(dataSource,taskDescription);
-        System.out.println(createJobJson);
+        DataSource dataSource = new DataSource();
+        //TaskDescription taskDescription = new TaskDescription();
+        //String createJobJson = createJobJson(dataSource,taskDescription);
+        //System.out.println(createJobJson);
     }
 
     // 创建JSONObject对象
@@ -68,6 +61,12 @@ public class CreateJobJson {
         JSONArray column = new JSONArray();
         column.add(0,taskDescription.getTdColumns());
         parameter.put("column",column);
+        //增量处理
+        if("Increment".equals(taskDescription.getTdMode())){
+            JSONArray querySql = new JSONArray();
+            querySql.add(0,"select * from "+taskDescription.getTdTableName()+" where trunc("+taskDescription.getTdIncrementColumn()+") > to_date(${createdate}, 'yyyy/mm/dd')");
+            parameter.put("querySql",querySql);
+        }
         JSONArray connection = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         JSONArray table = new JSONArray();
@@ -105,9 +104,9 @@ public class CreateJobJson {
         JSONArray column = new JSONArray();
         column.add(0,taskDescription.getTdColumns());
         parameter.put("column",column);
-        JSONArray preSql = new JSONArray();
-        preSql.add(0,"truncate table "+taskDescription.getTdTargetTableName());
-        parameter.put("preSql",preSql);
+//        JSONArray preSql = new JSONArray();
+//        preSql.add(0,"truncate table "+taskDescription.getTdTargetTableName());
+//        parameter.put("preSql",preSql);
         JSONArray connection = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         JSONArray table = new JSONArray();

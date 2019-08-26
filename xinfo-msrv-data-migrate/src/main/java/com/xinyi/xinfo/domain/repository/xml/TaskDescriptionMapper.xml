@@ -5,14 +5,14 @@
 <mapper namespace="com.xinyi.xinfo.domain.repository.TaskDescriptionMapper">
 	<select id="queryTaskDescription" resultType="com.xinyi.xinfo.domain.model.TaskDescription">
 		SELECT tdTaskId, tdSourceId,
-		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks
+		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks,tdJobjsonFilename,tdJobjsonstate
 		FROM TAB_DATA_MIGRATE_TASKDESCTION
 		ORDER BY tdTaskId
 		DESC
 	</select>
 	<select id="queryTaskDescriptionById" resultType="com.xinyi.xinfo.domain.model.TaskDescription">
 		SELECT tdTaskId, tdSourceId,
-		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks
+		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks,tdJobjsonFilename,tdJobjsonstate
 		FROM TAB_DATA_MIGRATE_TASKDESCTION
 		WHERE
 		tdTaskId=#{tdTaskId}
@@ -20,22 +20,30 @@
 	<insert id="insertTaskDescription"  parameterType="com.xinyi.xinfo.domain.model.TaskDescription">
 		INSERT INTO
 		TAB_DATA_MIGRATE_TASKDESCTION(tdTaskId, tdSourceId,
-		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks)
+		tdMode, tdIncrementColumn, tdTableName,tdColumns,tdTargetTableName,tdDispatch,tdRemarks,tdJobjsonFilename,tdJobjsonstate)
 		VALUES
 		(#{tdTaskId},#{tdSourceId},#{tdMode},#{tdIncrementColumn},
-		#{tdTableName},#{tdColumns},#{tdTargetTableName},#{tdDispatch},#{tdRemarks})
+		#{tdTableName},#{tdColumns},#{tdTargetTableName},#{tdDispatch},#{tdRemarks},#{tdJobjsonFilename},#{tdJobjsonstate})
 	</insert>
 	<update id="updateTaskDescription" parameterType="com.xinyi.xinfo.domain.model.TaskDescription">
 		update TAB_DATA_MIGRATE_TASKDESCTION
 		<set>
 			<if test="tdSourceId != null">tdSourceId=#{tdSourceId},</if>
 			<if test="tdMode != null">tdMode=#{tdMode},</if>
-			<if test="tdIncrementColumn != null">tdIncrementColumn=#{tdIncrementColumn},</if>
+			<if test="tdIncrementColumn == null">tdIncrementColumn=#{tdIncrementColumn},</if>
 			<if test="tdTableName != null">tdTableName=#{tdTableName},</if>
 			<if test="tdColumns != null">tdColumns=#{tdColumns},</if>
 			<if test="tdTargetTableName != null">tdTargetTableName=#{tdTargetTableName},</if>
-			<if test="tdDispatch != null">tdDispatch=#{tdDispatch},</if>
-			<if test="tdRemarks != null">tdRemarks=#{tdRemarks}</if>
+			<if test="tdDispatch == null">tdDispatch=#{tdDispatch},</if>
+			<if test="tdRemarks == null">tdRemarks=#{tdRemarks}</if>
+			<if test="tdJobjsonstate != null">tdJobjsonstate=#{tdJobjsonstate}</if>
+		</set>
+		where tdTaskId=#{tdTaskId}
+	</update>
+	<update id="updateJobjsonstate" parameterType="Integer">
+		update TAB_DATA_MIGRATE_TASKDESCTION
+		<set>
+			<if test="tdJobjsonstate != null">tdJobjsonstate=#{tdJobjsonstate}</if>
 		</set>
 		where tdTaskId=#{tdTaskId}
 	</update>

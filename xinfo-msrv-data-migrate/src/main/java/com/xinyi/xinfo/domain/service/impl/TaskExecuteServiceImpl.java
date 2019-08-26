@@ -1,41 +1,24 @@
-package com.xinyi.xinfo.start;
+package com.xinyi.xinfo.domain.service.impl;
 
 import com.xinyi.xinfo.contant.Constant;
 import com.xinyi.xinfo.domain.model.TaskDescription;
 import com.xinyi.xinfo.domain.repository.TaskDescriptionMapper;
+import com.xinyi.xinfo.domain.service.TaskExecuteService;
+import com.xinyi.xinfo.util.GetFileName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FilenameFilter;
-
 @Service
-public class TimingSchedule {
+public class TaskExecuteServiceImpl implements TaskExecuteService {
 
     @Autowired
-    private  TaskDescriptionMapper taskDescriptionMapper;
+    private TaskDescriptionMapper taskDescriptionMapper;
 
-
-    public static void main(String[] args) {
-        //定时任务
-//        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-//        service.scheduleAtFixedRate(new Runnable(){
-//
-//            @Override
-//            public void run() {
-//                batchExecuteDatax();
-//            }
-//
-//        }, Constant.initDelay, Constant.oneDay, TimeUnit.MILLISECONDS);
-
-        new TimingSchedule().batchExecuteDatax();
-
-    }
-    //批量执行datax
-    public  void batchExecuteDatax(){
+    @Override
+    public int batchExecuteDatax() {
         try {
             System.out.println("------------------startJob----------------------");
-            String[] str = getFileName(Constant.jsonPath);
+            String[] str = GetFileName.getjsonFileName(Constant.jsonPath);
             for (String name : str) {  //解决阻塞问题 "python -loglevel quiet "+Contant.dataxPath+" "+Contant.jsonPath+"/"+name+" --jobid="+jobId
                 String tdTaskId = name.substring(name.indexOf(".")-1,name.indexOf("."));
                 TaskDescription taskDescription = taskDescriptionMapper.queryTaskDescriptionById(Integer.parseInt(tdTaskId));
@@ -56,19 +39,11 @@ public class TimingSchedule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
-    //获取文件夹下所有 json 文件名
-    public static String[] getFileName(String path) {
-        File file = new File(path);
-        String[] fileName = file.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                if (name.endsWith(".json")) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        return fileName;
+
+    @Override
+    public int SingleExecuteDatax(int tdTaskId) {
+        return 0;
     }
 }

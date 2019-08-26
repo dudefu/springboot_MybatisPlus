@@ -66,7 +66,8 @@ public class Constant {
     public final static String POSTG_SOURCEID = props.getProperty("postgresql.sourceId");
     public final static String SQLSERVER_SOURCEID = props.getProperty("sqlserver.sourceId");
 
-    public static String JsonFileSavePath = "E:\\datax_json\\" ;
+    //定时时间设置
+    public static String cronTime = "0/6 * * * * ?";
 
 
 }

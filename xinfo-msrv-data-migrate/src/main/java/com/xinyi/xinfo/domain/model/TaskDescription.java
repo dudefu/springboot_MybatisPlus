@@ -41,8 +41,16 @@ public class TaskDescription {
      * 备注
      */
     private String tdRemarks ;
+    /**
+     * jobjson文件名
+     */
+    private String tdJobjsonFilename ;
+    /**
+     * jobjson执行状态
+     */
+    private int tdJobjsonstate ;
 
-    public TaskDescription(int tdTaskId, int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks) {
+    public TaskDescription(int tdTaskId, int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks, String tdJobjsonFilename, int tdJobjsonstate) {
         this.tdTaskId = tdTaskId;
         this.tdSourceId = tdSourceId;
         this.tdMode = tdMode;
@@ -52,7 +60,24 @@ public class TaskDescription {
         this.tdTargetTableName = tdTargetTableName;
         this.tdDispatch = tdDispatch;
         this.tdRemarks = tdRemarks;
+        this.tdJobjsonFilename = tdJobjsonFilename;
+        this.tdJobjsonstate = tdJobjsonstate;
     }
+
+    public TaskDescription(int tdTaskId, int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks, int tdJobjsonstate) {
+        this.tdTaskId = tdTaskId;
+        this.tdSourceId = tdSourceId;
+        this.tdMode = tdMode;
+        this.tdIncrementColumn = tdIncrementColumn;
+        this.tdTableName = tdTableName;
+        this.tdColumns = tdColumns;
+        this.tdTargetTableName = tdTargetTableName;
+        this.tdDispatch = tdDispatch;
+        this.tdRemarks = tdRemarks;
+        this.tdJobjsonstate = tdJobjsonstate;
+    }
+
+    public TaskDescription(){}
 
     public int getTdTaskId() {
         return tdTaskId;
@@ -124,5 +149,21 @@ public class TaskDescription {
 
     public void setTdRemarks(String tdRemarks) {
         this.tdRemarks = tdRemarks;
+    }
+
+    public String getTdJobjsonFilename() {
+        return tdJobjsonFilename;
+    }
+
+    public void setTdJobjsonFilename(String tdJobjsonFilename) {
+        this.tdJobjsonFilename = tdJobjsonFilename;
+    }
+
+    public int getTdJobjsonstate() {
+        return tdJobjsonstate;
+    }
+
+    public void setTdJobjsonstate(int tdJobjsonstate) {
+        this.tdJobjsonstate = tdJobjsonstate;
     }
 }

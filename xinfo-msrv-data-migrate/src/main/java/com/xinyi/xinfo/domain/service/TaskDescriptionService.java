@@ -30,7 +30,7 @@ public interface TaskDescriptionService {
 	 * @param tdRemarks
 	 * @return
 	 */
-	String addTaskDescription(int tdTaskId, int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks);
+	String addTaskDescription(int tdTaskId, int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks,String tdJobjsonFilename,int tdJobjsonstate);
 
 	/**
 	 * 修改任务
@@ -45,6 +45,7 @@ public interface TaskDescriptionService {
 	 * @return
 	 */
 	String modifyTaskDescription( int tdTaskId,int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks);
+
 
 	/**
 	 * 删除任务

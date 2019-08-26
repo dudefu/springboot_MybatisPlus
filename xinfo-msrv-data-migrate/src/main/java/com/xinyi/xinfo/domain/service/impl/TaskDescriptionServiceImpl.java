@@ -97,10 +97,10 @@ public class TaskDescriptionServiceImpl implements TaskDescriptionService {
 	 */
 	@Transactional
 	@Override
-	public String addTaskDescription(int tdTaskId, int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks) {
+	public String addTaskDescription(int tdTaskId, int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks,String tdJobjsonFilename,int tdJobjsonstate) {
 
 		jsonObject = new JSONObject();
-		TaskDescription taskDescription = new TaskDescription(tdTaskId,  tdSourceId,  tdMode,  tdIncrementColumn,  tdTableName,  tdColumns,  tdTargetTableName,  tdDispatch,  tdRemarks);
+		TaskDescription taskDescription = new TaskDescription(tdTaskId,  tdSourceId,  tdMode,  tdIncrementColumn,  tdTableName,  tdColumns,  tdTargetTableName,  tdDispatch,  tdRemarks,tdJobjsonFilename,tdJobjsonstate);
 		if (taskDescription.getTdTaskId() != 0 && 0 != taskDescription.getTdSourceId() &&
 			null != taskDescription.getTdMode() && null != taskDescription.getTdTableName() &&
 			null != taskDescription.getTdColumns() && null != taskDescription.getTdTargetTableName() ) {
@@ -139,10 +139,11 @@ public class TaskDescriptionServiceImpl implements TaskDescriptionService {
 	 */
 	@Transactional
 	@Override
-	public String modifyTaskDescription(int tdTaskId,int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks) {
+	public String modifyTaskDescription(int tdTaskId,int tdSourceId, String tdMode, String tdIncrementColumn, String tdTableName, String tdColumns, String tdTargetTableName, String tdDispatch, String tdRemarks ) {
 
 		jsonObject = new JSONObject();
-		TaskDescription taskDescription = new TaskDescription( tdTaskId  ,tdSourceId,  tdMode,  tdIncrementColumn,  tdTableName,  tdColumns,  tdTargetTableName,  tdDispatch,  tdRemarks);
+		int tdJobjsonstate = 0 ;
+		TaskDescription taskDescription = new TaskDescription( tdTaskId  ,tdSourceId,  tdMode,  tdIncrementColumn,  tdTableName,  tdColumns,  tdTargetTableName,  tdDispatch,  tdRemarks,tdJobjsonstate);
 		if (taskDescription.getTdTaskId() != 0 && 0 != taskDescription.getTdSourceId() &&
 				null != taskDescription.getTdMode() && null != taskDescription.getTdTableName() &&
 				null != taskDescription.getTdColumns() && null != taskDescription.getTdTargetTableName() ) {
@@ -177,12 +178,14 @@ public class TaskDescriptionServiceImpl implements TaskDescriptionService {
 	public String deleteTaskDescription(int tdTaskId) {
 
 		jsonObject = new JSONObject();
+		int tdJobjsonstate = 2 ;
 		if (tdTaskId > 0) {
 			try {
 				// 删除任务
 				int effectedNum = taskDescriptionMapper.deleteTaskDescription(tdTaskId);
-				if (effectedNum > 0) {
+				if (effectedNum > 0 ) {
 					jsonObject.put("state", new Status(Status.stateEnmu.SUCCESS.code, Status.stateEnmu.SUCCESS.msg));
+					taskDescriptionMapper.updateJobjsonstate(tdTaskId,tdJobjsonstate);
 					return jsonObject.toJSONString();
 				} else {
 					jsonObject.put("state", new Status(Status.stateEnmu.SUCCESS.code, "删除失败，请确认taskId是否正确"));

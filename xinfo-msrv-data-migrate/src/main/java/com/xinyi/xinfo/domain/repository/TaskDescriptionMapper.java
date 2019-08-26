@@ -51,4 +51,11 @@ public interface TaskDescriptionMapper {
      * @return tdTaskId
      */
     TaskProgressRate queryTaskProgressRateById(int tdTaskId);
+
+    /**
+     * 修改jobjson执行状态
+     * @param tdJobjsonstate
+     * @return
+     */
+    int updateJobjsonstate( int tdTaskId,int tdJobjsonstate);
 }

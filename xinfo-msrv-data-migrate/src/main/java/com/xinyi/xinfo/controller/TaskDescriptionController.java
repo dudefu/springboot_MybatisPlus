@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.xinyi.xinfo.contant.Constant;
 import com.xinyi.xinfo.domain.model.DataSource;
 import com.xinyi.xinfo.domain.model.TaskDescription;
 import com.xinyi.xinfo.domain.repository.DataSourceMapper;
@@ -98,27 +99,35 @@ public class TaskDescriptionController extends BaseController{
 			@ApiParam(name = "tdRemarks", value = "备注", required = false) @RequestParam(required = false) String tdRemarks
 	)throws JsonParseException, JsonMappingException, IOException {
 
-		// 添加任务，存入数据库
-		String isSuccess = taskDescriptionService.addTaskDescription( tdTaskId,  tdSourceId,  tdMode,  tdIncrementColumn,  tdTableName,  tdColumns,  tdTargetTableName,  tdDispatch,  tdRemarks);
-
-		//生成jobJson文件
-		Long currentTimeMillis = System.currentTimeMillis();
-		String currentTime = DateFormatUtils.format(currentTimeMillis,"yyyy-MM-dd HH:mm:ss");
-		try {
-			String jobCreateTime = fdfWithNoBar.format(fdfWithBar.parse(currentTime));
-			DataSource dataSource = dataSourceMapper.queryDataSourceById(String.valueOf(tdSourceId));
-			TaskDescription taskDescription = taskDescriptionMapper.queryTaskDescriptionById(tdTaskId);
-			String createJobJson = CreateJobJson.createJobJson(dataSource,taskDescription);
-			JSONObject jsonObject = JSON.parseObject(isSuccess);
-			String state = jsonObject.getString("state");
-			jsonObject = JSON.parseObject(state);
-			String stateSub = jsonObject.getString("state");
-			if("10200".equals(stateSub)){
-				SaveAsJsonFileWriter.saveAsFileWriter(createJobJson,"Job-"+jobCreateTime+"-"+tdTaskId+".json");
-			}
-		} catch (ParseException e) {
+		String jobCreateTime;
+		String tdJobjsonFilename = null ;
+		int tdJobjsonstate = 0 ;
+		try{
+			Long currentTimeMillis = System.currentTimeMillis();
+			String currentTime = DateFormatUtils.format(currentTimeMillis,"yyyy-MM-dd HH:mm:ss");
+			jobCreateTime = fdfWithNoBar.format(fdfWithBar.parse(currentTime));
+			tdJobjsonFilename = "Job-"+jobCreateTime+"-"+tdTaskId+".json" ;
+		}catch (Exception e){
 			e.printStackTrace();
 		}
+		// 添加任务，存入数据库
+		String isSuccess = taskDescriptionService.addTaskDescription( tdTaskId,  tdSourceId,  tdMode,  tdIncrementColumn,  tdTableName,  tdColumns,  tdTargetTableName,  tdDispatch,  tdRemarks,tdJobjsonFilename,tdJobjsonstate);
+
+		//生成jobJson文件
+		DataSource dataSource = dataSourceMapper.queryDataSourceById(String.valueOf(tdSourceId));
+		TaskDescription taskDescription = taskDescriptionMapper.queryTaskDescriptionById(tdTaskId);
+		String createJobJson = CreateJobJson.createJobJson(dataSource,taskDescription);
+		JSONObject jsonObject = JSON.parseObject(isSuccess);
+		String state = jsonObject.getString("state");
+		jsonObject = JSON.parseObject(state);
+		String stateSub = jsonObject.getString("state");
+		if("10200".equals(stateSub)){
+			SaveAsJsonFileWriter.saveAsFileWriter(createJobJson,tdJobjsonFilename);
+		}
+
+		//修改定时时间
+		Constant.cronTime = tdDispatch;
+
 		return isSuccess;
 	}
 
